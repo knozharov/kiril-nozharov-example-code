@@ -1,0 +1,24 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": null,
+    "database": "test_task",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "logging": false
+  },
+  "test": {
+    "username": "postgres",
+    "password": null,
+    "database": "test_task",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": null,
+    "database": "test_task",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
