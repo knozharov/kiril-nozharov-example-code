@@ -31,23 +31,28 @@ async function createLicenseRights(licenseRights, ebookId) {
 }
 
 async function createEbook(data) {
-  const savedEbook = await db.Ebook.create({
-    pgId: data.id,
-    title: data.title,
-    authors: data.authors,
-    publisher: data.publisher,
-    datePublished: data.publicationDate,
-    language: data.language,
-    subjects: data.subjects,
-    licenseRights: data.licenseRights
-  }, {
-    returning: true
+  const [savedEbook, created] = await db.Ebook.findOrCreate({
+    where: {
+      pgId: data.id,
+    },
+    defaults: {
+      pgId: data.id,
+      title: data.title,
+      publisher: data.publisher,
+      datePublished: data.publicationDate,
+      language: data.language
+    }
   });
+
+  if (!created) {
+    console.log(`DB entry for ebook with pgId: ${savedEbook.pgId} | title: '${savedEbook.title}' already exists.`);
+    return;
+  }
 
   await createAuthors(data.authors, savedEbook.id);
   await createSubjects(data.subjects, savedEbook.id);
   await createLicenseRights(data.licenseRights, savedEbook.id);
-  console.log(`Saved all info for ebook with pgId: ${savedEbook.pgId} | title: ${savedEbook.title}`);
+  console.log(`Saved all info for ebook with pgId: ${savedEbook.pgId} | title: '${savedEbook.title}'`);
 }
 
 module.exports = {
